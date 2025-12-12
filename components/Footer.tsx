@@ -11,15 +11,15 @@ const Footer = () => {
                     <ul className="space-y-4 text-sm">
                         <li className="flex items-start space-x-3">
                             <MapPin size={18} className="text-accent mt-1" />
-                            <span>123 Watch Street, Luxury Avenue, New York, NY 10012</span>
+                            <span>Main Steet Elpitiya</span>
                         </li>
                         <li className="flex items-center space-x-3">
                             <Phone size={18} className="text-accent" />
-                            <span>+1 234 567 890</span>
+                            <span>0912290410</span>
                         </li>
                         <li className="flex items-center space-x-3">
                             <Mail size={18} className="text-accent" />
-                            <span>info@watchshop.com</span>
+                            <span>gamagewatch@gmail.com</span>
                         </li>
                     </ul>
                     <div className="flex space-x-4 mt-6">
@@ -73,7 +73,7 @@ const Footer = () => {
             </div>
 
             <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10 text-center text-xs">
-                <p>&copy; 2025 Watch Shop. All Rights Reserved.</p>
+                <p>&copy; 2025 GAMAGE WATCH. All Rights Reserved.</p>
             </div>
         </footer>
     );

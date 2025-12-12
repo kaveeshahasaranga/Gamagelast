@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const posts = [
     { id: 1, title: "The History of Timekeeping", date: "Oct 12, 2025", image: "https://images.unsplash.com/photo-1509048191080-d2984bad6ae5?q=80&w=2070&auto=format&fit=crop" },
-    { id: 2, title: "Choosing the Perfect Watch", date: "Nov 05, 2025", image: "https://images.unsplash.com/photo-1511370235399-1802dae1d867?q=80&w=2076&auto=format&fit=crop" },
+    { id: 2, title: "Choosing the Perfect Watch", date: "Nov 05, 2025", image: "https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?q=80&w=1974&auto=format&fit=crop" },
     { id: 3, title: "Maintenance Tips", date: "Dec 01, 2025", image: "https://images.unsplash.com/photo-1585123334904-845d60e97b29?q=80&w=1935&auto=format&fit=crop" },
 ];
 
