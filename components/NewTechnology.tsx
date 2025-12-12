@@ -1,9 +1,9 @@
 import Image from "next/image";
 
 const products = [
-    { id: 1, name: "Smart Chrono", price: "$299", image: "https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?q=80&w=2070&auto=format&fit=crop" },
-    { id: 2, name: "Tech Master", price: "$350", image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?q=80&w=1227&auto=format&fit=crop" },
-    { id: 3, name: "Future Dial", price: "$420", image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?q=80&w=2080&auto=format&fit=crop" },
+    { id: 1, name: "Smart Chrono", price: "$299", image: "/home/home-watch-4.jpg" },
+    { id: 2, name: "Tech Master", price: "$350", image: "/home/home-watch-5.jpg" },
+    { id: 3, name: "Future Dial", price: "$420", image: "/home/home-watch-1.jpg" },
 ];
 
 const NewTechnology = () => {

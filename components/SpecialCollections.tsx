@@ -1,9 +1,9 @@
 import Image from "next/image";
 
 const collections = [
-    { id: 1, name: "Classic Series", image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=1999&auto=format&fit=crop" },
-    { id: 2, name: "Modern Tech", image: "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?q=80&w=1894&auto=format&fit=crop" },
-    { id: 3, name: "Luxury Gold", image: "https://images.unsplash.com/photo-1533139502658-0198f920d8e8?q=80&w=1942&auto=format&fit=crop" },
+    { id: 1, name: "Classic Series", image: "/home/home-watch-1.jpg" },
+    { id: 2, name: "Modern Tech", image: "/home/home-watch-2.jpg" },
+    { id: 3, name: "Luxury Gold", image: "/home/home-watch-3.jpg" },
 ];
 
 const SpecialCollections = () => {
