@@ -1,10 +1,20 @@
+
 import Link from "next/link";
+import Image from "next/image";
 
 const AboutHero = () => {
     return (
         <section className="relative h-[40vh] w-full bg-black flex flex-col items-center justify-center text-center px-4 overflow-hidden">
-            {/* Background Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black z-0" />
+            {/* Background Image */}
+            <div className="absolute inset-0 z-0 opacity-60">
+                <Image
+                    src="https://images.unsplash.com/photo-1585123334904-845d60e97b29?q=80&w=2070&auto=format&fit=crop"
+                    alt="About Us Background"
+                    fill
+                    className="object-cover"
+                    priority
+                />
+            </div>
 
             <div className="relative z-10">
                 <h1 className="text-4xl md:text-5xl font-serif text-white tracking-widest mb-4 uppercase">

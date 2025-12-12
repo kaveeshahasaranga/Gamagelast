@@ -8,9 +8,9 @@ interface ProductCardProps {
     image: string;
 }
 
-const ProductCard = ({ id, name, price, image }: ProductCardProps) => {
+export default function ProductCard({ id, name, price, image }: ProductCardProps) {
     return (
-        <Link href={`/shop/${id}`} className="group block text-center">
+        <Link href={`/shop/${id}`} className="group block text-center cursor-pointer">
             <div className="relative aspect-square w-full overflow-hidden mb-6 bg-white flex items-center justify-center p-8 border border-gray-100 hover:shadow-lg transition-all duration-300">
                 <div className="relative w-full h-full">
                     <Image
@@ -27,6 +27,4 @@ const ProductCard = ({ id, name, price, image }: ProductCardProps) => {
             <p className="text-sm text-gray-500 font-serif tracking-wide">{price}</p>
         </Link>
     );
-};
-
-export default ProductCard;
+}
