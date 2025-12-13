@@ -18,7 +18,7 @@ const Hero = () => {
                     New Arrival
                 </h2>
                 <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-text-light leading-tight mb-8">
-                    ONE TIME <br />
+                    PREMIUM  <br />
                     <span className="text-accent">WATCH</span>
                 </h1>
                 <p className="text-gray-400 max-w-md mb-10 text-sm md:text-base leading-relaxed">

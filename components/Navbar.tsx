@@ -30,15 +30,15 @@ const Navbar = () => {
                 <button className="hover:text-accent transition-colors">
                     <Search size={20} />
                 </button>
-                <button className="hover:text-accent transition-colors">
+                <Link href="/account" className="hover:text-accent transition-colors">
                     <User size={20} />
-                </button>
-                <button className="relative hover:text-accent transition-colors">
+                </Link>
+                <Link href="/cart" className="relative hover:text-accent transition-colors">
                     <ShoppingCart size={20} />
                     <span className="absolute -top-2 -right-2 bg-accent text-primary text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
-                        0
+                        2
                     </span>
-                </button>
+                </Link>
             </div>
         </nav>
     );

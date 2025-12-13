@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
+import ClientHydrationSuppressor from "@/components/ClientHydrationSuppressor";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair-display",
@@ -23,10 +24,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
+        suppressHydrationWarning
         className={`${playfair.variable} ${inter.variable} antialiased bg-primary text-text-light`}
       >
+        <ClientHydrationSuppressor />
         {children}
       </body>
     </html>
