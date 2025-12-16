@@ -28,7 +28,25 @@ const LoginPage = () => {
             if (result?.error) {
                 setError("Invalid email or password");
             } else {
-                router.push("/account");
+                // Fetch session to check role? No, client side redirect handles it.
+                // We don't have the user object in result. We need to fetch session or just redirect.
+                // A better approach is to let them go to account, but Navbar link helps. 
+                // OR we query the session first. 
+                // Let's just do a basic fetch to our me endpoint or check session? 
+                // Actually, next-auth sign in doesn't return user role immediately in client unless we await session.
+
+                // Simple hack: Redirect to /admin if email matches known admin? No, insecure.
+                // Let's rely on the Navbar link for now to keep login fast 
+                // BUT user wants me to fix "still showing this".
+                // I'll add a check.
+
+                const res = await fetch("/api/auth/session");
+                const session = await res.json();
+                if (session?.user?.role === "admin") {
+                    router.push("/admin");
+                } else {
+                    router.push("/account");
+                }
             }
         } catch (err) {
             setError("Something went wrong");

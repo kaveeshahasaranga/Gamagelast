@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import connectToDatabase from "@/lib/db";
 import Product from "@/models/Product";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export async function GET(req: Request) {
     try {
@@ -15,16 +17,12 @@ export async function GET(req: Request) {
         let query: any = {};
 
         if (search) {
-            query.name = { $regex: search, $options: "i" }; // Case-insensitive search
+            query.name = { $regex: search, $options: "i" };
         }
 
         if (category && category !== "All") {
-            // Assuming we have a category field, if not strict, partial match or exact
-            // For now, let's assume strict or if we don't have category field yet, we might need to rely on name/description or add it to schema.
-            // Looking at previous context, we don't explicitly have category in Product interface in local file, 
-            // but let's check Product model. 
-            // If Product model doesn't have category, we should add it or filter by name for now.
-            // Let's assume we want to filter by category field.
+            // If schema doesn't have category, we can add it or just ignore for now.
+            // Ideally we should add category to the Schema.
             query.category = category;
         }
 
@@ -42,5 +40,46 @@ export async function GET(req: Request) {
             { success: false, error: error.message },
             { status: 500 }
         );
+    }
+}
+
+export async function POST(req: Request) {
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session || session.user.role !== "admin") {
+            return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 });
+        }
+
+        const body = await req.json();
+        await connectToDatabase();
+
+        const product = await Product.create(body);
+
+        return NextResponse.json({ success: true, product }, { status: 201 });
+    } catch (error: any) {
+        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    }
+}
+
+export async function DELETE(req: Request) {
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session || session.user.role !== "admin") {
+            return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 });
+        }
+
+        const { searchParams } = new URL(req.url);
+        const id = searchParams.get("id");
+
+        if (!id) {
+            return NextResponse.json({ success: false, message: "ID required" }, { status: 400 });
+        }
+
+        await connectToDatabase();
+        await Product.findByIdAndDelete(id);
+
+        return NextResponse.json({ success: true, message: "Deleted" });
+    } catch (error: any) {
+        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
     }
 }

@@ -1,11 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import { Search, ShoppingCart, User } from "lucide-react";
+import { Search, ShoppingCart, User, LayoutDashboard } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 const Navbar = () => {
     const { cartCount } = useCart();
+    const router = useRouter();
+    const { data: session } = useSession();
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            console.log("Navigating to:", `/shop?search=${encodeURIComponent(searchQuery)}`);
+            router.push(`/shop?search=${encodeURIComponent(searchQuery)}`);
+        }
+    };
 
     return (
         <nav className="absolute top-0 left-0 w-full z-50 flex items-center justify-between px-8 py-6 text-text-light">
@@ -33,32 +47,33 @@ const Navbar = () => {
             {/* Icons */}
             <div className="flex items-center space-x-6">
                 <form
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        const form = e.target as HTMLFormElement;
-                        const input = form.elements.namedItem("search") as HTMLInputElement;
-                        if (input.value.trim()) {
-                            window.location.href = `/shop?search=${encodeURIComponent(input.value)}`;
-                        }
-                    }}
+                    onSubmit={handleSearch}
                     className="relative hidden lg:block"
                 >
                     <input
                         type="text"
-                        name="search"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search..."
-                        className="bg-transparent border-b border-gray-300 focus:border-accent text-sm pb-1 px-1 outline-none w-48 transition-all"
+                        className="bg-transparent border-b border-gray-300 focus:border-accent text-sm pb-1 px-1 outline-none w-48 transition-all text-black"
                     />
                     <button type="submit" className="absolute right-0 bottom-1 hover:text-accent">
                         <Search size={16} />
                     </button>
                 </form>
-                {/* Mobile Search Icon (Functionality could be improved for mobile modal later) */}
+                {/* Mobile Search Icon */}
                 <button className="lg:hidden hover:text-accent transition-colors">
                     <Search size={20} />
                 </button>
 
-                <Link href="/account" className="hover:text-accent transition-colors">
+                {/* Admin Link */}
+                {session?.user?.role === "admin" && (
+                    <Link href="/admin" className="hover:text-accent transition-colors" title="Admin Dashboard">
+                        <LayoutDashboard size={20} />
+                    </Link>
+                )}
+
+                <Link href="/account" className="hover:text-accent transition-colors" title="My Account">
                     <User size={20} />
                 </Link>
                 <Link href="/cart" className="relative hover:text-accent transition-colors">

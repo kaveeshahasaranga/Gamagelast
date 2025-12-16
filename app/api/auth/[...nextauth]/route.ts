@@ -57,8 +57,16 @@ export const authOptions = {
     session: {
         strategy: "jwt",
     },
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET || "fallback_stable_secret_for_dev",
+    debug: true,
 };
+
+console.log("NextAuth Secret Loaded:", !!process.env.NEXTAUTH_SECRET);
+
+// FORCE URL for Port 5000 (Debugging fix)
+if (!process.env.NEXTAUTH_URL) {
+    process.env.NEXTAUTH_URL = "http://localhost:5000";
+}
 
 const handler = NextAuth(authOptions);
 
