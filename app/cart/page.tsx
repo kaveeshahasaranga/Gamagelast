@@ -4,26 +4,33 @@ import Link from "next/link";
 import Image from "next/image";
 import PageHero from "@/components/PageHero";
 import { Trash2, Minus, Plus } from "lucide-react";
-
-// Mock Data
-const cartItems = [
-    {
-        id: 1,
-        name: "Classic Chronograph",
-        price: 250.00,
-        image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=1999&auto=format&fit=crop",
-        quantity: 1
-    },
-    {
-        id: 2,
-        name: "Modern Minimalist",
-        price: 180.00,
-        image: "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?q=80&w=1894&auto=format&fit=crop",
-        quantity: 2
-    }
-];
+import { useCart } from "@/context/CartContext";
 
 const CartPage = () => {
+    const { items, removeFromCart, updateQuantity, cartTotal } = useCart();
+
+    if (items.length === 0) {
+        return (
+            <main className="bg-white min-h-screen pb-24">
+                <PageHero
+                    title="Shopping Cart"
+                    breadcrumbs={[
+                        { label: "Home", href: "/" },
+                        { label: "Cart" }
+                    ]}
+                    backgroundImage="/images/cart-bg.png"
+                />
+                <div className="flex flex-col items-center justify-center py-24 text-center">
+                    <h2 className="text-2xl font-serif text-gray-900 mb-4">Your cart is empty</h2>
+                    <p className="text-gray-500 mb-8">Looks like you haven't added anything to your cart yet.</p>
+                    <Link href="/shop" className="bg-black text-white px-8 py-3 uppercase tracking-wider hover:bg-accent transition-colors">
+                        Continue Shopping
+                    </Link>
+                </div>
+            </main>
+        );
+    }
+
     return (
         <main className="bg-white min-h-screen pb-24">
             <PageHero
@@ -32,7 +39,7 @@ const CartPage = () => {
                     { label: "Home", href: "/" },
                     { label: "Cart" }
                 ]}
-                backgroundImage="/images/cart-bg.png"
+                backgroundImage="/images/cart-hero-bg.jpg"
             />
 
             <section className="max-w-7xl mx-auto px-4 py-16">
@@ -49,21 +56,24 @@ const CartPage = () => {
 
                         {/* Items List */}
                         <div className="space-y-6 md:space-y-0 mt-6 md:mt-0">
-                            {cartItems.map((item) => (
+                            {items.map((item) => (
                                 <div key={item.id} className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-4 py-6 border-b border-gray-100 items-center">
                                     {/* Product Info */}
                                     <div className="col-span-1 md:col-span-6 flex items-center space-x-6">
-                                        <div className="relative w-20 h-24 bg-gray-100 shrink-0">
+                                        <div className="relative w-24 h-24 bg-gray-100 shrink-0">
                                             <Image
                                                 src={item.image}
                                                 alt={item.name}
                                                 fill
-                                                className="object-cover"
+                                                className="object-contain p-2"
                                             />
                                         </div>
                                         <div>
                                             <h3 className="font-serif text-lg text-gray-900">{item.name}</h3>
-                                            <button className="text-gray-400 hover:text-red-500 transition-colors mt-2 flex items-center space-x-1 text-sm">
+                                            <button
+                                                onClick={() => removeFromCart(item.id)}
+                                                className="text-gray-400 hover:text-red-500 transition-colors mt-2 flex items-center space-x-1 text-sm"
+                                            >
                                                 <Trash2 size={14} />
                                                 <span>Remove</span>
                                             </button>
@@ -73,18 +83,24 @@ const CartPage = () => {
                                     {/* Price */}
                                     <div className="col-span-1 md:col-span-2 md:text-center text-gray-600 font-serif">
                                         <span className="md:hidden text-xs text-gray-400 uppercase tracking-wider mr-2">Price:</span>
-                                        ${item.price.toFixed(2)}
+                                        Rs. {item.price.toLocaleString()}
                                     </div>
 
                                     {/* Quantity */}
                                     <div className="col-span-1 md:col-span-2 flex md:justify-center items-center">
                                         <span className="md:hidden text-xs text-gray-400 uppercase tracking-wider mr-4">Quantity:</span>
                                         <div className="flex items-center border border-gray-200">
-                                            <button className="p-2 hover:bg-gray-100 text-gray-500">
+                                            <button
+                                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                                className="p-2 hover:bg-gray-100 text-gray-500"
+                                            >
                                                 <Minus size={14} />
                                             </button>
                                             <span className="w-8 text-center text-sm text-gray-700">{item.quantity}</span>
-                                            <button className="p-2 hover:bg-gray-100 text-gray-500">
+                                            <button
+                                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                className="p-2 hover:bg-gray-100 text-gray-500"
+                                            >
                                                 <Plus size={14} />
                                             </button>
                                         </div>
@@ -93,7 +109,7 @@ const CartPage = () => {
                                     {/* Total */}
                                     <div className="col-span-1 md:col-span-2 md:text-right font-serif text-gray-900">
                                         <span className="md:hidden text-xs text-gray-400 uppercase tracking-wider mr-2">Total:</span>
-                                        ${(item.price * item.quantity).toFixed(2)}
+                                        Rs. {(item.price * item.quantity).toLocaleString()}
                                     </div>
                                 </div>
                             ))}
@@ -109,7 +125,7 @@ const CartPage = () => {
                             <div className="space-y-4 mb-8 text-sm text-gray-600">
                                 <div className="flex justify-between border-b border-gray-100 pb-4">
                                     <span>Subtotal</span>
-                                    <span className="font-serif text-gray-900">$610.00</span>
+                                    <span className="font-serif text-gray-900">Rs. {cartTotal.toLocaleString()}</span>
                                 </div>
                                 <div className="flex justify-between border-b border-gray-100 pb-4">
                                     <span>Shipping</span>
@@ -117,7 +133,7 @@ const CartPage = () => {
                                 </div>
                                 <div className="flex justify-between items-center text-lg font-serif text-gray-900 pt-2">
                                     <span>Total</span>
-                                    <span>$610.00</span>
+                                    <span>Rs. {cartTotal.toLocaleString()}</span>
                                 </div>
                             </div>
                             <button className="w-full bg-black text-white py-4 uppercase tracking-wider font-bold hover:bg-accent hover:text-primary transition-all duration-300 transform hover:-translate-y-1">

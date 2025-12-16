@@ -3,6 +3,8 @@ import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import ClientHydrationSuppressor from "@/components/ClientHydrationSuppressor";
 
+import { Providers } from "@/components/Providers";
+
 const playfair = Playfair_Display({
   variable: "--font-playfair-display",
   subsets: ["latin"],
@@ -29,8 +31,10 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${playfair.variable} ${inter.variable} antialiased bg-primary text-text-light`}
       >
-        <ClientHydrationSuppressor />
-        {children}
+        <Providers>
+          <ClientHydrationSuppressor />
+          {children}
+        </Providers>
       </body>
     </html>
   );

@@ -1,12 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import { LogOut, Package, User, MapPin } from "lucide-react";
+import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const AccountPage = () => {
+    const { data: session, status } = useSession();
+    const router = useRouter();
     const [activeTab, setActiveTab] = useState("dashboard");
+
+    useEffect(() => {
+        if (status === "unauthenticated") {
+            router.push("/login");
+        }
+    }, [status, router]);
+
+    if (status === "loading") {
+        return (
+            <main className="bg-white min-h-screen pb-24 flex items-center justify-center">
+                <p className="text-xl font-serif">Loading account...</p>
+            </main>
+        );
+    }
+
+    if (!session) {
+        return null;
+    }
 
     return (
         <main className="bg-white min-h-screen pb-24">
@@ -30,7 +52,7 @@ const AccountPage = () => {
                                 </div>
                                 <div>
                                     <p className="text-xs text-gray-500 uppercase tracking-wider">Hello,</p>
-                                    <p className="font-serif text-lg">Kaveesha</p>
+                                    <p className="font-serif text-lg">{session.user?.name}</p>
                                 </div>
                             </div>
                             <nav className="space-y-1">
@@ -54,13 +76,13 @@ const AccountPage = () => {
                                     <MapPin size={18} />
                                     <span>Addresses</span>
                                 </button>
-                                <Link
-                                    href="/login"
+                                <button
+                                    onClick={() => signOut({ callbackUrl: "/login" })}
                                     className="w-full flex items-center space-x-3 px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors mt-4 border-t border-gray-200 pt-4"
                                 >
                                     <LogOut size={18} />
                                     <span>Logout</span>
-                                </Link>
+                                </button>
                             </nav>
                         </div>
                     </div>

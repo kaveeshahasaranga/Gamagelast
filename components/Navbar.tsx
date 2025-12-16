@@ -1,7 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import { Search, ShoppingCart, User } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 
 const Navbar = () => {
+    const { cartCount } = useCart();
+
     return (
         <nav className="absolute top-0 left-0 w-full z-50 flex items-center justify-between px-8 py-6 text-text-light">
             {/* Logo */}
@@ -35,9 +40,11 @@ const Navbar = () => {
                 </Link>
                 <Link href="/cart" className="relative hover:text-accent transition-colors">
                     <ShoppingCart size={20} />
-                    <span className="absolute -top-2 -right-2 bg-accent text-primary text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
-                        2
-                    </span>
+                    {cartCount > 0 && (
+                        <span className="absolute -top-2 -right-2 bg-accent text-primary text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
+                            {cartCount}
+                        </span>
+                    )}
                 </Link>
             </div>
         </nav>

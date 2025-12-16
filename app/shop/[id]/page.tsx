@@ -4,11 +4,21 @@ import ProductDetailsHero from "@/components/ProductDetailsHero";
 import ProductInfo from "@/components/ProductInfo";
 import ProductTabs from "@/components/ProductTabs";
 import RelatedProducts from "@/components/RelatedProducts";
-import { products } from "@/lib/products";
+import connectToDatabase from "@/lib/db";
+import Product from "@/models/Product";
 
 export default async function ProductDetails({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    const product = products.find((p) => p.id === parseInt(id));
+
+    await connectToDatabase();
+
+    let product = null;
+    try {
+        product = await Product.findById(id);
+    } catch (e) {
+        // Handle invalid ID format
+        product = null;
+    }
 
     if (!product) {
         return (
@@ -22,15 +32,25 @@ export default async function ProductDetails({ params }: { params: Promise<{ id:
         );
     }
 
+    // Adapt to component props
+    const productData = {
+        id: product._id.toString(),
+        name: product.name,
+        description: product.description,
+        price: `Rs. ${product.price.toLocaleString("en-US", { minimumFractionDigits: 2 })}`,
+        rawPrice: product.price, // Pass the raw number
+        image: product.image,
+    };
+
     return (
         <main className="min-h-screen bg-white">
             <Navbar />
             <ProductDetailsHero />
 
             <div className="max-w-7xl mx-auto px-8 py-16">
-                <ProductInfo product={product} />
+                <ProductInfo product={productData} />
                 <ProductTabs />
-                <RelatedProducts currentId={product.id} />
+                <RelatedProducts currentId={product._id.toString()} />
             </div>
 
             <Footer />

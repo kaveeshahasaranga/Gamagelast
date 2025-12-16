@@ -6,16 +6,34 @@ import { Heart, Share2 } from "lucide-react";
 
 interface ProductInfoProps {
     product: {
-        id: number;
+        id: string;
         name: string;
         price: string;
         image: string;
         description: string;
+        _id?: string;
     };
 }
 
+import { useCart } from "@/context/CartContext";
+
 export default function ProductInfo({ product }: ProductInfoProps) {
     const [quantity, setQuantity] = useState(1);
+    const { addToCart } = useCart();
+
+    const handleAddToCart = () => {
+        // Parse price from string "Rs. 4,500.00" -> number 4500
+        const priceNumber = parseFloat(product.price.replace(/[^0-9.]/g, ''));
+
+        addToCart({
+            id: product.id, // Ensure this matches what useCart expects (string)
+            name: product.name,
+            price: isNaN(priceNumber) ? 0 : priceNumber,
+            image: product.image,
+            quantity: quantity
+        });
+        alert("Added to Cart!");
+    };
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
@@ -81,7 +99,10 @@ export default function ProductInfo({ product }: ProductInfoProps) {
                         >+</button>
                     </div>
 
-                    <button className="flex-1 bg-black text-white px-8 py-3 uppercase tracking-wider hover:bg-accent transition-colors">
+                    <button
+                        onClick={handleAddToCart}
+                        className="flex-1 bg-black text-white px-8 py-3 uppercase tracking-wider hover:bg-accent transition-colors"
+                    >
                         Add to Cart
                     </button>
 
