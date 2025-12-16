@@ -1,22 +1,41 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import PageHero from "@/components/PageHero";
-import { LogOut, Package, User, MapPin } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const AccountPage = () => {
     const { data: session, status } = useSession();
     const router = useRouter();
-    const [activeTab, setActiveTab] = useState("dashboard");
+    const [orders, setOrders] = useState<any[]>([]);
 
     useEffect(() => {
         if (status === "unauthenticated") {
             router.push("/login");
         }
     }, [status, router]);
+
+    useEffect(() => {
+        const fetchOrders = async () => {
+            if (session?.user?.email) {
+                try {
+                    const res = await fetch('/api/orders');
+                    if (res.ok) {
+                        const data = await res.json();
+                        setOrders(data);
+                    }
+                } catch (e) {
+                    console.error("Failed to fetch orders", e);
+                }
+            }
+        }
+        if (status === "authenticated") {
+            fetchOrders();
+        }
+    }, [session, status]);
 
     if (status === "loading") {
         return (
@@ -36,51 +55,40 @@ const AccountPage = () => {
                 title="My Account"
                 breadcrumbs={[
                     { label: "Home", href: "/" },
-                    { label: "My Account" }
+                    { label: "Account" }
                 ]}
-                backgroundImage="/images/hero-bg.jpg"
+                backgroundImage="https://images.unsplash.com/photo-1517849845537-4d257902454a?q=80&w=2070&auto=format&fit=crop"
             />
 
             <section className="max-w-7xl mx-auto px-4 py-16">
                 <div className="flex flex-col md:flex-row gap-12">
                     {/* Sidebar */}
                     <div className="w-full md:w-1/4">
-                        <div className="bg-[#f9f9f9] p-6">
-                            <div className="flex items-center space-x-3 mb-8 pb-8 border-b border-gray-200">
+                        <div className="bg-gray-50 p-6 rounded-lg">
+                            <div className="flex items-center space-x-4 mb-6">
                                 <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center text-gray-500">
                                     <User size={24} />
                                 </div>
                                 <div>
-                                    <p className="text-xs text-gray-500 uppercase tracking-wider">Hello,</p>
-                                    <p className="font-serif text-lg">{session.user?.name}</p>
+                                    <p className="text-sm text-gray-500">Hello,</p>
+                                    <h3 className="font-serif font-bold text-gray-900">{session.user?.name}</h3>
                                 </div>
                             </div>
-                            <nav className="space-y-1">
-                                <button
-                                    onClick={() => setActiveTab("dashboard")}
-                                    className={`w-full flex items-center space-x-3 px-4 py-3 text-sm transition-colors ${activeTab === "dashboard" ? "bg-black text-white" : "text-gray-600 hover:bg-gray-100"}`}
-                                >
-                                    <User size={18} />
-                                    <span>Dashboard</span>
+                            <nav className="space-y-2">
+                                <button className="w-full text-left px-4 py-2 bg-black text-white rounded">
+                                    My Orders
+                                </button>
+                                <button className="w-full text-left px-4 py-2 hover:bg-gray-200 text-gray-700 rounded transition-colors">
+                                    Addresses
+                                </button>
+                                <button className="w-full text-left px-4 py-2 hover:bg-gray-200 text-gray-700 rounded transition-colors">
+                                    Account Details
                                 </button>
                                 <button
-                                    onClick={() => setActiveTab("orders")}
-                                    className={`w-full flex items-center space-x-3 px-4 py-3 text-sm transition-colors ${activeTab === "orders" ? "bg-black text-white" : "text-gray-600 hover:bg-gray-100"}`}
+                                    onClick={() => signOut({ callbackUrl: '/' })}
+                                    className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 rounded transition-colors flex items-center space-x-2 mt-4"
                                 >
-                                    <Package size={18} />
-                                    <span>Orders</span>
-                                </button>
-                                <button
-                                    className="w-full flex items-center space-x-3 px-4 py-3 text-sm text-gray-600 hover:bg-gray-100 transition-colors"
-                                >
-                                    <MapPin size={18} />
-                                    <span>Addresses</span>
-                                </button>
-                                <button
-                                    onClick={() => signOut({ callbackUrl: "/login" })}
-                                    className="w-full flex items-center space-x-3 px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors mt-4 border-t border-gray-200 pt-4"
-                                >
-                                    <LogOut size={18} />
+                                    <LogOut size={16} />
                                     <span>Logout</span>
                                 </button>
                             </nav>
@@ -89,70 +97,54 @@ const AccountPage = () => {
 
                     {/* Content */}
                     <div className="w-full md:w-3/4">
-                        {activeTab === "dashboard" && (
-                            <div>
-                                <h2 className="text-2xl font-serif text-gray-900 mb-6">Dashboard</h2>
-                                <p className="text-gray-600 mb-8">
-                                    From your account dashboard you can view your <span className="text-black font-semibold">recent orders</span>, manage your <span className="text-black font-semibold">shipping and billing addresses</span>, and <span className="text-black font-semibold">edit your password and account details</span>.
-                                </p>
+                        <h2 className="text-2xl font-serif text-gray-900 mb-6 uppercase tracking-widest border-b border-gray-200 pb-4">
+                            Order History
+                        </h2>
 
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    <div className="bg-[#f9f9f9] p-8 text-center hover:shadow-md transition-shadow cursor-pointer" onClick={() => setActiveTab("orders")}>
-                                        <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 text-accent">
-                                            <Package size={32} />
+                        <div className="space-y-6">
+                            {orders.length === 0 ? (
+                                <p>You haven't placed any orders yet.</p>
+                            ) : (
+                                orders.map((order) => (
+                                    <div key={order._id} className="border border-gray-200 p-6 rounded-lg">
+                                        <div className="flex justify-between items-start mb-4 border-b border-gray-100 pb-4">
+                                            <div>
+                                                <p className="text-sm text-gray-500">Order ID</p>
+                                                <p className="font-medium text-gray-900">#{order._id}</p>
+                                            </div>
+                                            <div className="text-right">
+                                                <p className="text-sm text-gray-500">Status</p>
+                                                <span className="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-xs font-bold rounded-full mt-1">
+                                                    {order.isPaid ? "Paid" : "Processing"}
+                                                </span>
+                                            </div>
                                         </div>
-                                        <h3 className="font-serif text-lg mb-2">Orders</h3>
-                                        <p className="text-sm text-gray-500">2 Active</p>
-                                    </div>
-                                    <div className="bg-[#f9f9f9] p-8 text-center hover:shadow-md transition-shadow cursor-pointer">
-                                        <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 text-accent">
-                                            <MapPin size={32} />
-                                        </div>
-                                        <h3 className="font-serif text-lg mb-2">Addresses</h3>
-                                        <p className="text-sm text-gray-500">Main St, Elpitiya</p>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
 
-                        {activeTab === "orders" && (
-                            <div>
-                                <h2 className="text-2xl font-serif text-gray-900 mb-6">Recent Orders</h2>
-                                <div className="bg-white border border-gray-200 overflow-hidden">
-                                    <table className="w-full text-left">
-                                        <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
-                                            <tr>
-                                                <th className="px-6 py-4 font-normal">Order</th>
-                                                <th className="px-6 py-4 font-normal">Date</th>
-                                                <th className="px-6 py-4 font-normal">Status</th>
-                                                <th className="px-6 py-4 font-normal">Total</th>
-                                                <th className="px-6 py-4 font-normal text-right">Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-gray-200">
-                                            <tr>
-                                                <td className="px-6 py-4 text-sm font-sans font-semibold text-gray-900">#2453</td>
-                                                <td className="px-6 py-4 text-sm text-gray-600">March 10, 2025</td>
-                                                <td className="px-6 py-4 text-sm"><span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">Delivered</span></td>
-                                                <td className="px-6 py-4 text-sm text-gray-900 font-serif">$250.00</td>
-                                                <td className="px-6 py-4 text-sm text-right">
-                                                    <button className="text-accent hover:text-black transition-colors">View</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td className="px-6 py-4 text-sm font-sans font-semibold text-gray-900">#2451</td>
-                                                <td className="px-6 py-4 text-sm text-gray-600">Feb 28, 2025</td>
-                                                <td className="px-6 py-4 text-sm"><span className="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full">Processing</span></td>
-                                                <td className="px-6 py-4 text-sm text-gray-900 font-serif">$180.00</td>
-                                                <td className="px-6 py-4 text-sm text-right">
-                                                    <button className="text-accent hover:text-black transition-colors">View</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        )}
+                                        <div className="space-y-4">
+                                            {order.orderItems.map((item: any) => (
+                                                <div key={item._id} className="flex justify-between items-center py-2">
+                                                    <div className="flex items-center space-x-4">
+                                                        <div className="relative w-12 h-12 bg-gray-100 shrink-0">
+                                                            {item.image && <Image src={item.image} alt={item.name} fill className="object-contain" />}
+                                                        </div>
+                                                        <div>
+                                                            <p className="font-medium">{item.name}</p>
+                                                            <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
+                                                        </div>
+                                                    </div>
+                                                    <p className="font-medium">Rs. {item.price.toLocaleString()}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
+                                            <p className="text-sm text-gray-500">Date: {new Date(order.createdAt).toLocaleDateString()}</p>
+                                            <p className="text-xl font-serif font-bold">Total: Rs. {order.totalPrice.toLocaleString()}</p>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
                     </div>
                 </div>
             </section>

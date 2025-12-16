@@ -136,9 +136,11 @@ const CartPage = () => {
                                     <span>Rs. {cartTotal.toLocaleString()}</span>
                                 </div>
                             </div>
-                            <button className="w-full bg-black text-white py-4 uppercase tracking-wider font-bold hover:bg-accent hover:text-primary transition-all duration-300 transform hover:-translate-y-1">
-                                Proceed to Checkout
-                            </button>
+                            <Link href="/checkout">
+                                <button className="w-full bg-black text-white py-4 uppercase tracking-wider font-bold hover:bg-accent hover:text-primary transition-all duration-300 transform hover:-translate-y-1">
+                                    Proceed to Checkout
+                                </button>
+                            </Link>
                         </div>
                     </div>
                 </div>

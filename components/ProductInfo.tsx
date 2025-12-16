@@ -9,6 +9,7 @@ interface ProductInfoProps {
         id: string;
         name: string;
         price: string;
+        rawPrice?: number;
         image: string;
         description: string;
         _id?: string;
@@ -22,11 +23,15 @@ export default function ProductInfo({ product }: ProductInfoProps) {
     const { addToCart } = useCart();
 
     const handleAddToCart = () => {
-        // Parse price from string "Rs. 4,500.00" -> number 4500
-        const priceNumber = parseFloat(product.price.replace(/[^0-9.]/g, ''));
+        // Use rawPrice if available, otherwise try to parse (fallback)
+        let priceNumber = product.rawPrice;
+
+        if (priceNumber === undefined) {
+            priceNumber = parseFloat(product.price.replace(/[^0-9.]/g, ''));
+        }
 
         addToCart({
-            id: product.id, // Ensure this matches what useCart expects (string)
+            id: product.id,
             name: product.name,
             price: isNaN(priceNumber) ? 0 : priceNumber,
             image: product.image,
