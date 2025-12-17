@@ -15,7 +15,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     ];
 
     return (
-        <div className="flex min-h-screen bg-gray-100 font-sans">
+        <div className="flex min-h-screen bg-gray-100 font-sans text-gray-900">
             {/* Sidebar */}
             <aside className="w-64 bg-black text-white flex-shrink-0 hidden md:flex flex-col">
                 <div className="p-6 border-b border-gray-800">
@@ -32,8 +32,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                 key={item.href}
                                 href={item.href}
                                 className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all ${isActive
-                                        ? "bg-white text-black font-semibold"
-                                        : "text-gray-400 hover:text-white hover:bg-gray-800"
+                                    ? "bg-white text-black font-semibold"
+                                    : "text-gray-400 hover:text-white hover:bg-gray-800"
                                     }`}
                             >
                                 <Icon size={20} />

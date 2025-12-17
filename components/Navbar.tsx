@@ -24,7 +24,7 @@ const Navbar = () => {
     return (
         <nav className="absolute top-0 left-0 w-full z-50 flex items-center justify-between px-8 py-6 text-text-light">
             {/* Logo */}
-            <div className="text-2xl font-serif font-bold tracking-wider">
+            <div className="text-2xl font-serif font-bold tracking-wider select-none cursor-pointer">
                 <Link href="/">GAMAGE WATCH</Link>
             </div>
 

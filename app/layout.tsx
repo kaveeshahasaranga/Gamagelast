@@ -16,8 +16,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Watch Shop | Premium Timepieces",
-  description: "Discover our exclusive collection of luxury watches.",
+  title: "Gamage Watch | Premium Timepieces",
+  description: "Discover our exclusive collection of luxury watches at Gamage Watch.",
 };
 
 export default function RootLayout({

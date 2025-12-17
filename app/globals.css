@@ -21,3 +21,37 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
 }
+
+/* Prevent text selection on interactive elements and headings for app-like feel */
+a,
+button,
+[role="button"],
+.cursor-pointer,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+img,
+span.font-bold {
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+}
+
+/* Re-enable cursor pointer for actual interactables */
+a,
+button,
+[role="button"],
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* Allow selection in textareas and inputs */
+input,
+textarea {
+  user-select: text;
+  -webkit-user-select: text;
+  cursor: text;
+}

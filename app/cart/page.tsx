@@ -18,7 +18,7 @@ const CartPage = () => {
                         { label: "Home", href: "/" },
                         { label: "Cart" }
                     ]}
-                    backgroundImage="/images/cart-bg.png"
+                    backgroundImage="/images/cart-bg.jpg"
                 />
                 <div className="flex flex-col items-center justify-center py-24 text-center">
                     <h2 className="text-2xl font-serif text-gray-900 mb-4">Your cart is empty</h2>
@@ -39,7 +39,7 @@ const CartPage = () => {
                     { label: "Home", href: "/" },
                     { label: "Cart" }
                 ]}
-                backgroundImage="/images/cart-hero-bg.jpg"
+                backgroundImage="/images/cart-bg.jpg"
             />
 
             <section className="max-w-7xl mx-auto px-4 py-16">

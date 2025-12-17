@@ -23,10 +23,10 @@ const Footer = () => {
                         </li>
                     </ul>
                     <div className="flex space-x-4 mt-6">
-                        <Link href="#" className="hover:text-accent transition-colors"><Facebook size={20} /></Link>
-                        <Link href="#" className="hover:text-accent transition-colors"><Twitter size={20} /></Link>
-                        <Link href="#" className="hover:text-accent transition-colors"><Instagram size={20} /></Link>
-                        <Link href="#" className="hover:text-accent transition-colors"><Youtube size={20} /></Link>
+                        <Link href="https://www.facebook.com/share/18wMNbRoqN/" target="_blank" className="hover:text-accent transition-colors"><Facebook size={20} /></Link>
+                        {/* Twitter removed as not provided */}
+                        <Link href="https://www.instagram.com/gamagewatches?igsh=MXFnNWZyb3lwNG45MQ==" target="_blank" className="hover:text-accent transition-colors"><Instagram size={20} /></Link>
+                        <Link href="https://youtube.com/@rustystories?si=n_a0ULfBrW5SM6Jt" target="_blank" className="hover:text-accent transition-colors"><Youtube size={20} /></Link>
                     </div>
                 </div>
 
@@ -34,10 +34,9 @@ const Footer = () => {
                 <div>
                     <h4 className="text-white font-serif text-lg mb-6">MY ACCOUNT</h4>
                     <ul className="space-y-3 text-sm">
-                        <li><Link href="#" className="hover:text-accent transition-colors">My Profile</Link></li>
-                        <li><Link href="#" className="hover:text-accent transition-colors">My Orders</Link></li>
-                        <li><Link href="#" className="hover:text-accent transition-colors">Wishlist</Link></li>
-                        <li><Link href="#" className="hover:text-accent transition-colors">Newsletter</Link></li>
+                        <li><Link href="/account" className="hover:text-accent transition-colors">My Profile</Link></li>
+                        <li><Link href="/account" className="hover:text-accent transition-colors">My Orders</Link></li>
+                        <li><Link href="/shop" className="hover:text-accent transition-colors">Shop All</Link></li>
                     </ul>
                 </div>
 
@@ -45,10 +44,9 @@ const Footer = () => {
                 <div>
                     <h4 className="text-white font-serif text-lg mb-6">CATEGORIES</h4>
                     <ul className="space-y-3 text-sm">
-                        <li><Link href="#" className="hover:text-accent transition-colors">Men's Watches</Link></li>
-                        <li><Link href="#" className="hover:text-accent transition-colors">Women's Watches</Link></li>
-                        <li><Link href="#" className="hover:text-accent transition-colors">Smart Watches</Link></li>
-                        <li><Link href="#" className="hover:text-accent transition-colors">Accessories</Link></li>
+                        <li><Link href="/shop?category=Men" className="hover:text-accent transition-colors">Men's Watches</Link></li>
+                        <li><Link href="/shop?category=Women" className="hover:text-accent transition-colors">Women's Watches</Link></li>
+                        <li><Link href="/shop?category=Accessories" className="hover:text-accent transition-colors">Accessories</Link></li>
                     </ul>
                 </div>
 

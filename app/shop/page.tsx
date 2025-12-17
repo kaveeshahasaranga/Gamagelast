@@ -131,8 +131,8 @@ function ShopContent() {
                                         <button
                                             onClick={() => updateFilters(cat)}
                                             className={`hover:text-black transition-colors ${(category === cat || (!searchParams.get("category") && cat === "All"))
-                                                    ? "text-black font-bold underline"
-                                                    : ""
+                                                ? "text-black font-bold underline"
+                                                : ""
                                                 }`}
                                         >
                                             {cat}
@@ -176,6 +176,20 @@ function ShopContent() {
 
                 {/* Product Grid */}
                 <div className="lg:w-3/4 w-full">
+                    {searchParams.get("search") && (
+                        <div className="mb-6">
+                            <h2 className="text-lg text-gray-700">
+                                Results for <span className="font-bold text-black">"{searchParams.get("search")}"</span>
+                            </h2>
+                            <button
+                                onClick={() => router.push('/shop')}
+                                className="text-sm text-gray-500 hover:text-black underline mt-1"
+                            >
+                                Clear Search
+                            </button>
+                        </div>
+                    )}
+
                     {loading ? (
                         <div className="flex justify-center items-center h-64">
                             <p className="text-xl font-serif tracking-widest animate-pulse">LOADING...</p>
@@ -229,7 +243,7 @@ function ShopContent() {
 
 export default function Shop() {
     return (
-        <main className="min-h-screen bg-white">
+        <main className="min-h-screen bg-white text-black">
             <Navbar />
             <ShopHero />
             <Suspense fallback={<div className="text-center py-20">Loading Shop...</div>}>
